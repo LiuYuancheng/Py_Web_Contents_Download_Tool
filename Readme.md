@@ -41,6 +41,15 @@ https://stackoverflow.com/questions/66022042/how-to-let-kubernetes-pod-run-a-loc
 
 ###### Hardware Needed : None
 
+###### Program File List 
+
+version: v0.1
+
+| Program File   | Execution Env | Description                          |
+| -------------- | ------------- | ------------------------------------ |
+| webDownload.py | python 3      | Main executable program use the API. |
+| urllist.txt    |               | url record list.                     |
+
 
 
 ------
@@ -90,6 +99,38 @@ soup = urlDownloader(imgFlg=True, linkFlg=True, scriptFlg=True)
    - The image used in the page will be saved in folder: "1_www.carousell.sg_files/img"
    - The html/imge/css import by href will be saved in folder: "1_www.carousell.sg_files/link"
    - The js file used by the page will be saved in fodler: "1_www.carousell.sg_files/script"
+
+
+
+#### Problem and Solution
+
+###### **Problem**[0]: Files download got slight different
+
+Why there is a slight different between the files which download by using the program and the files which downlaod I use some-webBrowser's "page save as " for the same URL such as www.google.com
+
+**OS Platform** : n.a
+
+**Error Message**: n.a
+
+**Type**: n.a
+
+**Solution**:
+
+This is normal situation, the logic of web scrape and browser display are different: if you type www.google.ccom if different people's browser, you can see the page shown on different browser are also different. This is because the browser cache, token in the local storage , cookie will make influence of the "GET" request. So when different people type in the google URL in their browser, they can see their own Gmail Icon shows on the right top corner. If you remove all the cache, token in the local storage , cookie of your browser and try "page save as ", the file downloaded by  "page save as " should be same as the program. 
+
+
+
+###### **Problem**[2]: Some download Image are empty
+
+**OS Platform** : n.a
+
+**Error Message**: n.a
+
+**Type**: n.a
+
+**Solution**:
+
+If a web use third party's storage to save the image and the net-storage need to authorization before download, our program download request will be reject and got 'null' when download the file. Then the saved image will be empty. 
 
 
 
