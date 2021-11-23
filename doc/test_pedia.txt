@@ -1,0 +1,2 @@
+folder	url	phish	prediction	siamese_conf	vt_result	runtime
+accounts.g.cdcde.com	https://accounts.g.cdcde.com/ServiceLogin?passive=1209600&osid=1&continue=https://plus.g.cdcde.com/&followup=https://plus.g.cdcde.com/	1	Google	0.95011556	error	6.1062
