@@ -23,7 +23,7 @@ https://stackoverflow.com/questions/61430166/python-3-7-on-ubuntu-20-04/61430652
 ###### 2. Install torch 1.7 (only for CPU)
 
 ```
-pip install torch==1.7.1+cpu torchvision==0.8.2+cpu torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+pip install torch==1.8.1+cpu torchvision==0.8.2+cpu torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
 Install torch 1.6 (not use this)
@@ -145,4 +145,12 @@ VTScan is not working...
 yc@yc-VirtualBox:~/Project/Phishpedia$ 
 
 
+
+------
+
+##### Questions 
+
+**Question 1**: Is there any requirement about the screenshot file in dataset(shot.png as shown below). The screenshot needs to have the logo of the website, is that correct ? For some of my test web, if I use different web browser to open the URL, the page shows up will got a little different. Will that make any influence of the result, or you prefer us to use Google-Chrome to do the screenshot. 
+
+**Question 2**: If we want to check some URL/web and its logo is not in the logo folder "Logo-2k"(As shown below), we should copy the logo files with different resolution in a folder and put it in the foler "Logo-2k", am I correct ? 
 
