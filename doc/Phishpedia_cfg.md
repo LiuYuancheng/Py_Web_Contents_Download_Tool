@@ -1,18 +1,43 @@
-Steps to config phishpedia without Nvidia derver installed(CPU mode)
+# Phishpedia Ubuntu 20.04 Config
 
-1. install python3.7
+[TOC]
+
+##### Execution Env
+
+Ubuntu 20.04 
+
+python 3.8 64bit
+
+
+
+------
+
+##### Steps to config phishpedia without Nvidia driver installed(CPU mode)
+
+###### 1. Install python3.7 (optional)
+
 https://stackoverflow.com/questions/61430166/python-3-7-on-ubuntu-20-04/61430652
 
-2. install torch 1.6
+
+
+###### 2. Install torch 1.7 (only for CPU)
+
+```
+pip install torch==1.7.1+cpu torchvision==0.8.2+cpu torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+```
+
+Install torch 1.6 (not use this)
+
+```
 pip install torch==1.6.0+cpu torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
 https://pytorch.org/get-started/previous-versions/
+```
 
+**2.1 Problem 1**: Detectron 2 offical not support torch 1.6 any more: 
 
-Problem 1: Detectron 2 offical not support torch 1.6 any more: 
-
---
-   ERROR: Command errored out with exit status 1:
+```
+ERROR: Command errored out with exit status 1:
      command: /usr/bin/python3 -c 'import sys, setuptools, tokenize; sys.argv[0] = '"'"'/tmp/pip-req-build-zbirp7v7/setup.py'"'"'; __file__='"'"'/tmp/pip-req-build-zbirp7v7/setup.py'"'"';f=getattr(tokenize, '"'"'open'"'"', open)(__file__);code=f.read().replace('"'"'\r\n'"'"', '"'"'\n'"'"');f.close();exec(compile(code, __file__, '"'"'exec'"'"'))' egg_info --egg-base /tmp/pip-req-build-zbirp7v7/pip-egg-info
          cwd: /tmp/pip-req-build-zbirp7v7/
     Complete output (7 lines):
@@ -23,22 +48,44 @@ Problem 1: Detectron 2 offical not support torch 1.6 any more:
       File "/tmp/pip-req-build-zbirp7v7/setup.py", line 14, in <module>
         assert torch_ver >= [1, 8], "Requires PyTorch >= 1.8"
     AssertionError: Requires PyTorch >= 1.8
-    ----------------------------------------
 ERROR: Command errored out with exit status 1: python setup.py egg_info Check the logs for full command output.
+```
 
----
+**Solution:** install torch==1.7.1+cpu
 
-3. intall Detectron for CPU only 
+
+
+###### 3. Install Detectron-2 for CPU only 
+
+use the offical pre-build 
+
+```
 pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.8/index.html
-
-4. enabled the CPU config. 
-/home/yc/Project/Phishpedia/src/detectron2_pedia
+```
 
 
-5. run the program: 
+
+###### 4.Enabled the Phishpedia CPU config 
+
+File: Phishpedia/src/detectron2_pedia line 47: 
+
+```
+# uncomment if you installed detectron2 cpu version
+# cfg.MODEL.DEVICE = 'cpu'
+```
+
+
+
+###### 5. Run the program
+
+```
 python3 phishpedia_main.py --folder ./datasets/test_sites --results./test.txt
+```
 
-error: 
+Problem 5.1 : error: 
+
+```
+
 
 det (3.0.4) doesn't match a supported version!
   warnings.warn("urllib3 ({}) or chardet ({}) doesn't match a supported "
@@ -64,15 +111,15 @@ Traceback (most recent call last):
   File "/home/yc/.local/lib/python3.8/site-packages/torch/serialization.py", line 762, in _legacy_load
     magic_number = pickle_module.load(f, **pickle_load_args)
 _pickle.UnpicklingError: invalid load key, 'v'.
+```
 
-Solution: 
+**Solution**: Download all the model again(one by one, not use the google drive zip) because the zip will may make the file damaged. 
 
-https://github.com/YBIGTA/pytorch-hair-segmentation/issues/38
+solution reference link: https://github.com/YBIGTA/pytorch-hair-segmentation/issues/38
 
+------
 
-
-
-6 execution result: 
+##### Execution result
 
 python3 phishpedia_main.py --folder ./datasets/test_sites --results ./test.txt
 /usr/lib/python3/dist-packages/requests/__init__.py:89: RequestsDependencyWarning: urllib3 (1.26.7) or chardet (3.0.4) doesn't match a supported version!
@@ -96,7 +143,6 @@ Response:  <Response [403]>
 VTScan is not working...
 100%|██████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:06<00:00,  6.14s/it]
 yc@yc-VirtualBox:~/Project/Phishpedia$ 
-
 
 
 
