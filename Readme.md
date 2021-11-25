@@ -98,7 +98,7 @@ soup = urlDownloader(imgFlg=True, linkFlg=True, scriptFlg=True)
    - The main web page will be saved as:  "1_www.carousell.sg_files/1_www.carousell.sg.html"
    - The image used in the page will be saved in folder: "1_www.carousell.sg_files/img"
    - The html/imge/css import by href will be saved in folder: "1_www.carousell.sg_files/link"
-   - The js file used by the page will be saved in fodler: "1_www.carousell.sg_files/script"
+   - The js file used by the page will be saved in folder: "1_www.carousell.sg_files/script"
 
 
 
@@ -106,7 +106,7 @@ soup = urlDownloader(imgFlg=True, linkFlg=True, scriptFlg=True)
 
 ###### **Problem**[0]: Files download got slight different
 
-Why there is a slight different between the files which download by using the program and the files which downlaod I use some-webBrowser's "page save as " for the same URL such as www.google.com
+Why there is a slight different between the files which download by using the program and the files which download I use some-webBrowser's "page save as " for the same URL such as www.google.com
 
 **OS Platform** : n.a
 

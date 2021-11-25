@@ -3,11 +3,11 @@
 # Name:        webAttestation.py
 #
 # Purpose:     This module is used to do the url/web attestation by using the 
-#              Phishperida API. The user can list all the url he wants to download 
+#              Phishperida API. The user can list all the url he wants to check 
 #              in the file "urllist.txt" .
 #              For each url, the program will do below steps:
 #               1. use webDownloader module to download all the web components.
-#               2. use webScreenShoter moudle to get a screenshot of the webpage.
+#               2. use webScreenShoter module to get a screenshot of the webpage.
 #               3. pass the web components and the screen shot to Phishperida API
 #               to do the phishing web/url check. 
 #
