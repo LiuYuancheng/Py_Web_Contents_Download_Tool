@@ -216,7 +216,7 @@ if __name__ == "__main__":
             print(str(e)) """
 
     #  raise(e)
-    time.sleep(2)
+time.sleep(2)
 
 
 

@@ -80,6 +80,11 @@ class urlDownloader(object):
             if self.scriptFlg: self.soupfindnSave(pagefolder, tag2find='script', inner='src')
             with open(os.path.join(pagefolder, pagefilename+'.html'), 'wb') as file:
                 file.write(self.soup.prettify('utf-8'))
+            
+            # record the url also: 
+            with open(os.path.join(pagefolder, 'info.txt'), "a+", encoding='ISO-8859-1') as f:
+                f.write(self.url)
+                
             return True
         except Exception as e:
             print("savePage(): create files failed: %s." % str(e))
