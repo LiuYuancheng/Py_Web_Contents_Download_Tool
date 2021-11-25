@@ -1,0 +1,7 @@
+folder	url	phish	prediction	siamese_conf	vt_result	runtime
+accounts.g.cdcde.com	https://accounts.g.cdcde.com/ServiceLogin?passive=1209600&osid=1&continue=https://plus.g.cdcde.com/&followup=https://plus.g.cdcde.com/	1	Google	0.95011556	error	5.7132
+accounts.g.cdcde.com	https://accounts.g.cdcde.com/ServiceLogin?passive=1209600&osid=1&continue=https://plus.g.cdcde.com/&followup=https://plus.g.cdcde.com/	1	Google	0.95011556	error	5.7048
+1_www.google.com	https://www.google.com	0	None	None	None	4.7525
+2_www.carousell.sg	https://www.carousell.sg/	0	None	None	None	5.168
+3_www.google.com	https://www.google.com/search?q=github&sxsrf=AOaemvJh3t5_h8H85AE8Ajbb1IMnBrRISA%3A1636698503535&source=hp&ei=hwmOYY6mHdGkqtsPq8S9sAY&iflsig=ALs-wAMAAAAAYY4Xl7GLWS16_xc2Q9XrG0p3q277DpkL&oq=&gs_lcp=Cgdnd3Mtd2l6EAEYADIHCCMQ6gIQJzIHCCMQ6gIQJzIHCCMQ6gIQJzIHCCMQ6gIQJzIHCCMQ6gIQJzIHCCMQ6gIQJzINCC4QxwEQowIQ6gIQJzIHCCMQ6gIQJzIHCCMQ6gIQJzIHCCMQ6gIQJ1AAWABgjgdoAXAAeACAAQCIAQCSAQCYAQCwAQo&sclient=gws-wiz	0	None	None	None	3.5579
+4_stackoverflow.com	https://stackoverflow.com/questions/66022042/how-to-let-kubernetes-pod-run-a-local-script/66025424	0	None	None	None	4.7858
