@@ -21,7 +21,11 @@ import re
 from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
 
-URL_RCD = 'urllist.txt' # file to save
+GV_FLG = True # Flag to identify whether use gloval value
+
+if GV_FLG: import webGlobal as gv
+URL_RCD = gv.URL_LIST if GV_FLG else 'urllist.txt' # file to save url list
+RST_DIR = gv.DATA_DIR if GV_FLG else 'datasets'
 
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
@@ -69,7 +73,7 @@ class urlDownloader(object):
         try:
             response = self.session.get(url)
             self.soup = BeautifulSoup(response.text, features="lxml")
-            pagefolder = pagefilename+'_files'  # page contents
+            pagefolder =os.path.join( RST_DIR, pagefilename) # page contents
             if not os.path.exists(pagefolder): os.mkdir(pagefolder)
             if self.imgFlg: self.soupfindnSave(pagefolder, tag2find='img', inner='src')
             if self.linkFlg: self.soupfindnSave(pagefolder, tag2find='link', inner='href')
@@ -86,6 +90,7 @@ class urlDownloader(object):
 def main():
     soup = urlDownloader(imgFlg=True, linkFlg=True, scriptFlg=True)
     count = failCount= 0
+    if not os.path.exists(RST_DIR): os.mkdir(RST_DIR)
     print("> load url record file %s" %URL_RCD)
     with open(URL_RCD) as fp:
         urllines = fp.readlines()
@@ -98,7 +103,7 @@ def main():
                 domain = str(urlparse(line).netloc)
                 folderName = "_".join((str(count), domain))
                 result = soup.savePage(line, folderName)
-                #soup.savePage('https://www.google.com', 'www_google_com')
+                # soup.savePage('https://www.google.com', 'www_google_com')
                 if result: 
                     print('Finished.')
                 else:
