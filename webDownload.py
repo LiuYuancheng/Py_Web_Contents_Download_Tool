@@ -18,6 +18,7 @@
 import os, sys
 import re
 import requests
+import ssl
 from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
 
@@ -26,16 +27,18 @@ if GV_FLG: import webGlobal as gv
 URL_RCD = gv.URL_LIST if GV_FLG else 'urllist.txt' # file to save url list
 RST_DIR = gv.DATA_DIR if GV_FLG else 'datasets'
 URL_FN = gv.INFO_RCD_NAME if GV_FLG else 'info.txt' # url file name 
+PORT = 443 # port to download the server certificate 
 
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
 class urlDownloader(object):
     """ Download the webpage components base on the input url."""
-    def __init__(self, imgFlg=True, linkFlg=True, scriptFlg=True):
+    def __init__(self, imgFlg=True, linkFlg=True, scriptFlg=True, caFlg=True):
         self.soup = None
         self.imgFlg = imgFlg
         self.linkFlg = linkFlg
         self.scriptFlg = scriptFlg
+        self.caFlg = caFlg
         self.linkType = ('css', 'png', 'ico', 'jpg', 'jpeg', 'mov', 'ogg', 'gif', 'xml','js')
         self.session = requests.Session()
         
@@ -59,6 +62,8 @@ class urlDownloader(object):
             if self.imgFlg: self._soupfindnSave(url, pagefolder, tag2find='img', inner='src')
             if self.linkFlg: self._soupfindnSave(url, pagefolder, tag2find='link', inner='href')
             if self.scriptFlg: self._soupfindnSave(url, pagefolder, tag2find='script', inner='src')
+            if self.caFlg:
+                self.saveServCA(url, pagefolder)
             with open(os.path.join(pagefolder, pagefileDir+'.html'), 'wb') as file:
                 file.write(self.soup.prettify('utf-8'))
             if txtMD: 
@@ -68,6 +73,37 @@ class urlDownloader(object):
             return True
         except Exception as e:
             print("> savePage(): Create files failed: %s." % str(e))
+            return False
+
+    #-----------------------------------------------------------------------------
+    def saveServCA(self, url, pagefolder):
+        """ Parse the host name from the URL then try to download the host's SSL 
+            certificate. 
+            Args:
+                url ([try]): web url string.
+                pagefileDir (str, optional): path to save the web components.
+
+            Returns:
+                [bool]: whether the components saved the successfully.
+        """
+        if 'https' in url:
+            certfolder = os.path.join(pagefolder, 'cert')
+            if not os.path.exists(certfolder): os.mkdir(certfolder)
+            caFilepath = os.path.join(certfolder, 'cert.der')
+            hostname = urlparse(url).hostname
+            with open(caFilepath, 'wb') as f:
+                cert = None
+                try:
+                    cert = ssl.get_server_certificate((hostname, PORT))
+                except:
+                    print('>> Error: host: %s is invalid.' % str(hostname))
+                    # revert split the host to remove the country section such as 'sg'
+                    hostname = hostname.rsplit('.', 1)[0]
+                    cert = ssl.get_server_certificate((hostname, PORT))
+                if cert: f.write(ssl.PEM_cert_to_DER_cert(cert)) # write the cert info.
+            return True
+        else:
+            print(">> The url is not a https url, now ssl CA available")
             return False
 
     #-----------------------------------------------------------------------------
@@ -101,7 +137,7 @@ class urlDownloader(object):
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
 def main():
-    soup = urlDownloader(imgFlg=True, linkFlg=True, scriptFlg=True)
+    soup = urlDownloader(imgFlg=True, linkFlg=True, scriptFlg=True, caFlg=True)
     count = failCount= 0
     if not os.path.exists(RST_DIR): os.mkdir(RST_DIR)
     print("> load url record file %s" %URL_RCD)
@@ -115,6 +151,7 @@ def main():
                 line = line.strip()
                 domain = str(urlparse(line).netloc)
                 folderName = "_".join((str(count), domain))
+                #print(domain)
                 result = soup.savePage(line, folderName)
                 # soup.savePage('https://www.google.com', 'www_google_com')
                 if result: 
