@@ -1,6 +1,6 @@
 # Web Downloader
 
-**Program Design Purpose**: We want to scrape and download all the components (.html, .css, img, xml, video, javascript ...) for several batch of webpages based on a list of URLs.
+**Program Design Purpose**: We want to scrape and download all the components (.html, .css, img, xml, video, javascript, host ssl certificate ...) for several batch of webpages based on a list of URLs.
 
 
 
@@ -23,7 +23,7 @@ https://stackoverflow.com/questions/66022042/how-to-let-kubernetes-pod-run-a-loc
 
 ![](doc/img/downloader.png)
 
-Version: v_0.1
+Version: v_0.2
 
 
 
@@ -35,23 +35,25 @@ Version: v_0.1
 
 ###### Additional Lib/Software Need
 
-1. **beautifulsoup4 4.10.0**
-
-   install:
+1. **beautifulsoup4 4.10.0**: https://pypi.org/project/beautifulsoup4/
 
    ```
-   pip install beautifulsoup4
+   Installation cmd: pip install beautifulsoup4
+   ```
+   
+2. **Python SSL lib**: https://pypi.org/project/ssl/
+
+   ```
+   Installation cmd: pip install ssl
    ```
 
-   Lib link: https://pypi.org/project/beautifulsoup4/
-
-2. 
+3. 
 
 ###### Hardware Needed : None
 
 ###### Program File List 
 
-version: v0.1
+version: v_0.2
 
 | Program File   | Execution Env | Description                          |
 | -------------- | ------------- | ------------------------------------ |
@@ -69,12 +71,13 @@ version: v0.1
 1. WebDownloader init: 
 
 ```
-obj = urlDownloader(imgFlg=True, linkFlg=True, scriptFlg=True)
+obj = urlDownloader(imgFlg=True, linkFlg=True, scriptFlg=True, caFlg=True)
 ```
 
 - **imgFlg**: Set to "True" to download all the "img" tag files. 
 - **linkFlg**: Set to "True" to download all the html section, image, icon, css file imported by  "href".
 - **scriptFlg**: set to "True" to download  all the js file. 
+- **caFlg**: set to "True" to download the host SSL certificate. 
 
 2. Call API method savePage to scape url and save the data in a folder 
 
@@ -91,7 +94,7 @@ obj = urlDownloader(imgFlg=True, linkFlg=True, scriptFlg=True)
 
 ###### Program Execution 
 
-1. Copy the URLs you want to check in the URLs record file "**urllist.txt**"
+1. Copy all the URLs you want to check into the URLs record file "**urllist.txt**".
 
 2. Cd to the program folder and run program execution cmd: 
 
@@ -101,15 +104,14 @@ obj = urlDownloader(imgFlg=True, linkFlg=True, scriptFlg=True)
 
 3. Check the result: 
 
-   For example, if you copy the url "https://www.carousell.sg/" as the first url you want to check into the file "urllist.txt" file, all the html files, image file and js files will be under folder "**`1_www.carousell.sg_files`**"
+   For example, if you copy the url "https://www.carousell.sg/" as the first url you want to check into the file "urllist.txt" file, all the html files, image file and js files will be under folder "`1_www.carousell.sg_files`"
 
    - The main web page will be saved as:  "`1_www.carousell.sg_files/1_www.carousell.sg.html`"
    - The image used in the page will be saved in folder: "`1_www.carousell.sg_files/img`"
    - The html/imge/css import by href will be saved in folder: "`1_www.carousell.sg_files/link`"
    - The js file used by the page will be saved in folder: "`1_www.carousell.sg_files/script`"
    - The url https://www.carousell.sg/ string will be saved in the file `1_www.carousell.sg_files/Info.txt`.
-
-
+   - The certificate of host www.carousell will be download as file `1_www.carousell.sg_files/cert/cert.der`.
 
 
 
@@ -149,5 +151,5 @@ If a web use third party's storage to save the image and the net-storage need to
 
 ------
 
-> Last edit by LiuYuancheng(liu_yuan_cheng@hotmail.com) at 30/11/2021
+> Last edit by LiuYuancheng(liu_yuan_cheng@hotmail.com) at 05/01/2022
 

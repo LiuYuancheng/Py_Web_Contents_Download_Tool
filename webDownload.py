@@ -3,14 +3,14 @@
 # Name:        webDownload.py
 #
 # Purpose:     This module will provide API to download the webpage components: 
-#              html file, image file, javascript file, href link file based on 
-#              the input url. The user can list all the url he wants to downlad 
-#              in the file "urllist.txt" .
+#              html file, image file, javascript file, href link file, host SSL
+#              certificate  based on the input url. The user can list all the 
+#              urls he wants to downlad in the file "urllist.txt" .
 #
 # Author:      Yuancheng Liu
 #
 # Created:     2021/11/12
-# Version:     v_0.1
+# Version:     v_0.2
 # Copyright:   n.a
 # License:     n.a
 #-----------------------------------------------------------------------------
@@ -22,17 +22,17 @@ import ssl
 from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
 
-GV_FLG = True # Flag to identify whether use gloval value
+GV_FLG = True # Flag to identify whether use global value
 if GV_FLG: import webGlobal as gv
 URL_RCD = gv.URL_LIST if GV_FLG else 'urllist.txt' # file to save url list
 RST_DIR = gv.DATA_DIR if GV_FLG else 'datasets'
 URL_FN = gv.INFO_RCD_NAME if GV_FLG else 'info.txt' # url file name 
-PORT = 443 # port to download the server certificate 
+PORT = 443 # port to download the server certificate most server use 443.
 
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
 class urlDownloader(object):
-    """ Download the webpage components base on the input url."""
+    """ Download the webpage components based on the input urls."""
     def __init__(self, imgFlg=True, linkFlg=True, scriptFlg=True, caFlg=True):
         self.soup = None
         self.imgFlg = imgFlg
@@ -45,15 +45,16 @@ class urlDownloader(object):
     #-----------------------------------------------------------------------------
     def savePage(self, url, pagefileDir='page', txtMD=True):
         """ Save the web page components based on the input url and dir name.
-        Args:
-            url ([try]): web url string.
-            pagefileDir (str, optional): path to save the web components.
-        Returns:
-            [bool]: whether the components saved the successfully.
+            Args:
+                url ([try]): web url string.
+                pagefileDir (str, optional): path to save the web components.
+                txtMD(bool, optional): flag to identify whether save the url in txt file.
+            Returns:
+                [bool]: whether the components are saved the successfully.
         """
         if not ('http' in url):
             print("> savePage(): The input url is not valid: %s" %str(url))
-            return
+            return False
         try:
             response = self.session.get(url)
             self.soup = BeautifulSoup(response.text, features="lxml")
@@ -62,8 +63,7 @@ class urlDownloader(object):
             if self.imgFlg: self._soupfindnSave(url, pagefolder, tag2find='img', inner='src')
             if self.linkFlg: self._soupfindnSave(url, pagefolder, tag2find='link', inner='href')
             if self.scriptFlg: self._soupfindnSave(url, pagefolder, tag2find='script', inner='src')
-            if self.caFlg:
-                self.saveServCA(url, pagefolder)
+            if self.caFlg: self.saveServCA(url, pagefolder)
             with open(os.path.join(pagefolder, pagefileDir+'.html'), 'wb') as file:
                 file.write(self.soup.prettify('utf-8'))
             if txtMD: 
@@ -82,7 +82,6 @@ class urlDownloader(object):
             Args:
                 url ([try]): web url string.
                 pagefileDir (str, optional): path to save the web components.
-
             Returns:
                 [bool]: whether the components saved the successfully.
         """
@@ -103,7 +102,7 @@ class urlDownloader(object):
                 if cert: f.write(ssl.PEM_cert_to_DER_cert(cert)) # write the cert info.
             return True
         else:
-            print(">> The url is not a https url, now ssl CA available")
+            print(">> The url is not a https url, no ssl CA available")
             return False
 
     #-----------------------------------------------------------------------------
