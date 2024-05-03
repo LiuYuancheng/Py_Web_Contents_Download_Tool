@@ -164,31 +164,5 @@ def main():
         downloader.downloadWebContents(urlStr, downloadFolderPath)
 
 #-----------------------------------------------------------------------------
-#-----------------------------------------------------------------------------
-def main_old():
-    soup = urlDownloader(imgFlg=True, linkFlg=True, scriptFlg=True, caFlg=True)
-    count = failCount= 0
-    if not os.path.exists(RST_DIR): os.mkdir(RST_DIR)
-    print("> load url record file %s" %URL_RCD)
-    with open(URL_RCD) as fp:
-        urllines = fp.readlines()
-        for line in urllines:
-            if line[0] in ['#', '', '\n', '\r', '\t']: continue # jump comments/empty lines.
-            count += 1
-            print("> Process URL {}: {}".format(count, line.strip()))
-            if ('http' in line):
-                line = line.strip()
-                domain = str(urlparse(line).netloc)
-                folderName = "_".join((str(count), domain))
-                #print(domain)
-                result = soup.savePage(line, folderName)
-                # soup.savePage('https://www.google.com', 'www_google_com')
-                if result: 
-                    print('Finished.')
-                else:
-                    failCount +=1
-    print("\n> Download result: download %s url, %s fail" %(str(count), str(failCount)))
-
-#-----------------------------------------------------------------------------
 if __name__ == '__main__':
     main()
