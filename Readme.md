@@ -1,12 +1,31 @@
-# Web Downloader
+# Python Web Contents Download Tool
 
-**Program Design Purpose**: We want to scrape and download all the components (.html, .css, img, xml, video, javascript, host ssl certificate ...) for several batch of webpages based on a list of URLs.
+**Program Design Purpose**: Our objective is to develop a Python library for bigdata project's data collection purpose which can scraping and downloading all the components (such as .html, .css, img, xml, video, javascript, host ssl certificate ...) for several batch of webpages based on a list of URLs.
+
+The program workflow is depicted below:
+
+![](doc/img/downloader.png)` Figure-00: Python_web_contents_download_tool_workflow_diagram, version v0.1.2 (2024)`
+
+The library will download the web main html contents first then use python beautifulsoup lib to parse all the contents from the web html file source to get the linked html, image, java script, css then download the contents one by one and save in the related local folder.  It will provide a flexible API that allows integration with other programs seamlessly.
+
+```
+# Created:     2021/11/12
+# Version:     v_0.1.2
+# Copyright:   Copyright (c) 2024 LiuYuancheng
+# License:     MIT License 
+```
+
+**Table of Contents**
+
+[TOC]
+
+------
+
+### Introduction 
+
+This module will provide API to download the webpage components :  html file, image file, css file,  xml file javascript file, href link file based on the input url (the url must start with 'http' or 'https' ). The module input and output flow is shown below:
 
 
-
-#### Introduction 
-
-This module will provide API to download the webpage components :  html file, image file, css file,  xml file javascript file, href link file based on the input url (the url must start with 'http' or 'https' ). 
 
 To prosses multiple URLs at the same time, The user can list all the URLs he wants to download  in the file "urllist.txt" as shown below (line start with char '#' will be treated as comments and ignored): 
 
@@ -19,11 +38,7 @@ https://www.google.com/search?q=github&sxsrf=AOaemvJh3t5_h8H85AE8Ajbb1IMnBrRISA%
 https://stackoverflow.com/questions/66022042/how-to-let-kubernetes-pod-run-a-local-script/66025424
 ```
 
-###### Program Workflow
-
-![](doc/img/downloader.png)
-
-Version: v_0.2
+Afterward, execute the test case program `testCase.py`, and the captured screenshots will be saved in the output folder `outputFolder`.
 
 
 
