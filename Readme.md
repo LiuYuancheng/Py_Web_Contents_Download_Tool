@@ -1,6 +1,6 @@
 # Python Web Contents Download Tool
 
-**Program Design Purpose**: Our objective is to develop a Python library for bigdata project's data collection purpose which can scraping and downloading all the components (such as .html, .css, img, xml, video, javascript, host ssl certificate ...) for several batch of webpages based on a list of URLs.
+**Program Design Purpose**: Our goal is to develop a Python library tailored for big data projects, specifically designed for data collection purposes. This library will facilitate the scraping and downloading of all components associated with multiple batches of webpages, including `.html` files, `.css` stylesheets, `images`, `XML` files, `videos`, `JavaScript` files, and host `SSL certificates`, based on a provided list of URLs.
 
 The program workflow is depicted below:
 
@@ -23,11 +23,32 @@ The library will download the web main html contents first then use python beaut
 
 ### Introduction 
 
-This module will provide API to download the webpage components :  html file, image file, css file,  xml file javascript file, href link file based on the input url (the url must start with 'http' or 'https' ). The module input and output flow is shown below:
+This module offers an API for downloading various components of webpages, including HTML files, images, CSS files, XML files, JavaScript files, and hyperlink links, based on input URLs (which must begin with 'http' or 'https'). The module's input and output flow is represented in the diagram below:
 
+```mermaid
+flowchart TD
+	A[User_Input] --> |Web_URL_Str_list| B
+	B[Web_Contents_Parser] --> |HTML_page_source|C
+	B[Web_Contents_Parser] --> |hyperlink_image|C
+	B[Web_Contents_Parser] --> |CSS_contents|C
+	B[Web_Contents_Parser] --> |java_script|C
+	B[Web_Contents_Parser] --> |Certificate_info|C
+	C[We_Download_module] --> |Main_HTML_page|D
+	C[We_Download_module] --> |Download_Info|D
+	C[We_Download_module] --> |Images|E
+	C[We_Download_module] --> |Javascript|F
+	C[We_Download_module] --> |XML|G
+	C[We_Download_module] --> |CSS_contents|H
+	C[We_Download_module] --> |web_CA|I
+	D[Output / domain]
+	E[Output / domain/ Img]
+	F[Output / domain/ script]
+	G[Output / domain/ xml]
+	H[Output / domain/ css]
+	I[Output / domain/ ca]
+```
 
-
-To prosses multiple URLs at the same time, The user can list all the URLs he wants to download  in the file "urllist.txt" as shown below (line start with char '#' will be treated as comments and ignored): 
+To process multiple URLs simultaneously, users can list all the URLs they wish to download in the file "*urllist.txt*", as shown below (lines starting with '#' will be treated as comments and ignored):
 
 ```
 # Add the URL you want to download line by line(The url must start with 'http' or 'https' ):
@@ -44,11 +65,11 @@ Afterward, execute the test case program `testCase.py`, and the captured screens
 
 ------
 
-#### Program Setup
+### Program Setup
 
-###### Development Environment : python 3.7.4
+##### Development Environment : python 3.7.4
 
-###### Additional Lib/Software Need
+##### Additional Lib/Software Need
 
 1. **beautifulsoup4 4.10.0**: https://pypi.org/project/beautifulsoup4/
 
@@ -64,24 +85,64 @@ Afterward, execute the test case program `testCase.py`, and the captured screens
 
 3. 
 
-###### Hardware Needed : None
+##### Hardware Needed : None
 
-###### Program File List 
-
-version: v_0.2
+##### Program File List 
 
 | Program File   | Execution Env | Description                          |
 | -------------- | ------------- | ------------------------------------ |
 | webDownload.py | python 3      | Main executable program use the API. |
+| testCase.py    | python 3.7+   | Test case program and usage example. |
 | urllist.txt    |               | url record list.                     |
 
 
 
 ------
 
-#### Program Usage
+### Program Usage
 
-###### Module API Usage
+
+
+#### Program Execution 
+
+Users have two options for executing the program: processing URLs individually or batch processing multiple URLs. 
+
+**Use Console Interface** 
+
+To process URLs individually, users can run the program directly and follow the steps provided:
+
+```
+python webDownload.py
+```
+
+![](doc/img/output.png)
+
+` Figure-1: Python_web_download_tool_execution, version v0.1.2 (2024)`
+
+**Batches Process URL with Record File** 
+
+1. Prepare a list of URLs to be processed by copying them into the URL record file "**urllist.txt**".
+
+2. Navigate to the program folder and execute the program using the following command:
+
+```
+python testCase.py
+```
+
+3. Check the result: 
+
+For example, if you copy the url "https://www.carousell.sg/" as the first url you want to check into the file "urllist.txt" file, all the html files, image file and js files will be under folder "`1_www.carousell.sg_files`"
+
+- The main web page will be saved as:  "`1_www.carousell.sg_files/1_www.carousell.sg.html`"
+- The image used in the page will be saved in folder: "`1_www.carousell.sg_files/img`"
+- The html/imge/css import by href will be saved in folder: "`1_www.carousell.sg_files/link`"
+- The js file used by the page will be saved in folder: "`1_www.carousell.sg_files/script`"
+- The url https://www.carousell.sg/ string will be saved in the file `1_www.carousell.sg_files/Info.txt`.
+- The certificate of host www.carousell will be download as file `1_www.carousell.sg_files/cert/cert.der`.
+
+
+
+#### Module API Usage
 
 1. WebDownloader init: 
 
@@ -100,33 +161,11 @@ obj = urlDownloader(imgFlg=True, linkFlg=True, scriptFlg=True, caFlg=True)
    obj.savePage('<url>', '<folder_name>')
    
    # Exampe:
-   obj.savePage('https://www.google.com', 'www_google_com')
+   obj.downloadWebContents('https://www.google.com', 'www_google_com')
    ```
 
-3.  --
 
-
-
-###### Program Execution 
-
-1. Copy all the URLs you want to check into the URLs record file "**urllist.txt**".
-
-2. Cd to the program folder and run program execution cmd: 
-
-   ```
-   python webDownload.py
-   ```
-
-3. Check the result: 
-
-   For example, if you copy the url "https://www.carousell.sg/" as the first url you want to check into the file "urllist.txt" file, all the html files, image file and js files will be under folder "`1_www.carousell.sg_files`"
-
-   - The main web page will be saved as:  "`1_www.carousell.sg_files/1_www.carousell.sg.html`"
-   - The image used in the page will be saved in folder: "`1_www.carousell.sg_files/img`"
-   - The html/imge/css import by href will be saved in folder: "`1_www.carousell.sg_files/link`"
-   - The js file used by the page will be saved in folder: "`1_www.carousell.sg_files/script`"
-   - The url https://www.carousell.sg/ string will be saved in the file `1_www.carousell.sg_files/Info.txt`.
-   - The certificate of host www.carousell will be download as file `1_www.carousell.sg_files/cert/cert.der`.
+> For detail API usage, please refer to document [Lib_api_doc.html](Lib_api_doc.html)
 
 
 
@@ -134,7 +173,7 @@ obj = urlDownloader(imgFlg=True, linkFlg=True, scriptFlg=True, caFlg=True)
 
 #### Problem and Solution
 
-###### **Problem**[0]: Files download got slight different with browser direct download.
+##### Problem[0]: Files download got slight different with browser direct download.
 
 Why there is a slight different between the files which are downloaded by the program and the files which download I use some-webBrowser's "page save as " for the same URL such as www.google.com ? 
 
@@ -150,7 +189,7 @@ This is normal situation, the logic of web scrape and browser display are differ
 
 
 
-###### **Problem**[2]: Some download image are empty or can not open
+##### Problem[2]: Some download image are empty or can not open
 
 **OS Platform** : n.a
 
@@ -166,5 +205,5 @@ If a web use third party's storage to save the image and the net-storage need to
 
 ------
 
-> Last edit by LiuYuancheng(liu_yuan_cheng@hotmail.com) at 05/01/2022
+> Last edit by LiuYuancheng(liu_yuan_cheng@hotmail.com) at 04/05/2024, if you have any problem, please send me a message. 
 
