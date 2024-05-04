@@ -35,7 +35,8 @@ def testCase(inputfile, outputFolder):
             if ('http' in line):
                 urlStr = line.strip()
                 domain = str(urlparse(urlStr).netloc)
-                downloadFolderPath = os.path.join(dirpath,outputFolder, '_'.join((str(urlCount), domain)))
+                downloadFolderPath = os.path.join(dirpath,outputFolder, 
+                                                  '_'.join((str(urlCount), domain)))
                 result = downloader.downloadWebContents(urlStr, downloadFolderPath)
                 if result: 
                     print('Finished.')

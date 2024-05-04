@@ -83,7 +83,6 @@ Afterward, execute the test case program `testCase.py`, and the captured screens
    Installation cmd: pip install ssl
    ```
 
-3. 
 
 ##### Hardware Needed : None
 
@@ -147,7 +146,7 @@ For example, if you copy the url "https://www.carousell.sg/" as the first url yo
 1. WebDownloader init: 
 
 ```
-obj = urlDownloader(imgFlg=True, linkFlg=True, scriptFlg=True, caFlg=True)
+obj = webDownloader.webDownloader(imgFlg=True, linkFlg=True, scriptFlg=True, caFlg=True)
 ```
 
 - **imgFlg**: Set to "True" to download all the "img" tag files. 

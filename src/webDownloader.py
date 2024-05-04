@@ -4,8 +4,8 @@
 #
 # Purpose:     This module will provide API to download the webpage components: 
 #              html file, image file, javascript file, href link file, host SSL
-#              certificate  based on the input url. The user can list all the 
-#              urls he wants to downlad in the file "urllist.txt" .
+#              certificate and xxl  based on the input url. The user can list 
+#              all the urls he wants to downlad in the file "urllist.txt" .
 #
 # Author:      Yuancheng Liu
 #
@@ -28,22 +28,23 @@ PORT = 443 # port to download the server certificate most server use 443.
 
 # init the not html hyper link type:
 SP_LINK_TYPE = ('css', 'png', 'ico', 'jpg', 'jpeg', 'mov', 'ogg', 'gif', 'xml','js')
+# init the html maim page pre-fix. the contents will be save in file downloadPage_yyyymmdd_hhmmss.html
 PAGE_PRE_FIX = 'downloadPage'
-URL_RCD_FILE = 'urlRcd.txt'
+URL_RCD_FILE = 'urlRcd.txt' # file to record the download info.
 
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
 class webDownloader(object):
-    """ Download the webpage components based on the input urls."""
+    """ Downloader class."""
     def __init__(self, imgFlg=True, linkFlg=True, scriptFlg=True, caFlg=True, 
                  spLinkType=SP_LINK_TYPE):
-        """_summary_
-        Args:
-            imgFlg (bool, optional): _description_. Defaults to True.
-            linkFlg (bool, optional): _description_. Defaults to True.
-            scriptFlg (bool, optional): _description_. Defaults to True.
-            caFlg (bool, optional): _description_. Defaults to True.
-            spLinkType (_type_, optional): _description_. Defaults to SP_LINK_TYPE.
+        """ Init example: webDownloader(imgFlg=True, linkFlg=True, scriptFlg=True, caFlg=True)
+            Args:
+                imgFlg (bool, optional): flag to identify whehter download image. Defaults to True.
+                linkFlg (bool, optional): flag to identify whehter download all the hyper link contents. Defaults to True.
+                scriptFlg (bool, optional): flag to identify whehter download script. Defaults to True.
+                caFlg (bool, optional): flag to identify whehter download certificate. Defaults to True.
+                spLinkType (list, optional): all the hyper link contents type . Defaults to SP_LINK_TYPE.
         """
         self.soup = None
         self.imgFlg = imgFlg
@@ -55,7 +56,9 @@ class webDownloader(object):
 
     #-----------------------------------------------------------------------------
     def _soupfindnSave(self, url, outputFolder, tag2find='img', inner='src'):
-        """ Saves on specified pagefolder all tag2find objects. """
+        """ Use the beautiful soup lib to find all the tag in the html contents and 
+            download the contents.
+        """
         pagefolder = os.path.join(outputFolder, tag2find)
         if not os.path.exists(pagefolder): os.mkdir(pagefolder)
         for res in self.soup.findAll(tag2find):   # images, css, etc..
@@ -85,7 +88,7 @@ class webDownloader(object):
         """ Parse the host name from the URL then try to download the host's SSL 
             certificate. 
             Args:
-                url ([try]): web url string.
+                url (str): web url string.
                 pagefileDir (str, optional): path to save the web components.
             Returns:
                 [bool]: whether the components saved the successfully.
@@ -111,7 +114,14 @@ class webDownloader(object):
             return False
 
     #-----------------------------------------------------------------------------
-    def downloadWebContents(self, urlStr, outputDirPath): 
+    def downloadWebContents(self, urlStr, outputDirPath):
+        """ Download the web contents.
+            Args:
+                urlStr (str): url string
+                outputDirPath (str): output folder path.
+            Returns:
+                bool: true if download successful, else fails.
+        """
         if not ('http' in urlStr):
             print("> savePage(): The input url is not valid: %s" %str(urlStr))
             return False
